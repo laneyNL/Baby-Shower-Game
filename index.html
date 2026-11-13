@@ -179,7 +179,7 @@
             document.getElementById(screenId).classList.remove('hidden');
         }
 
-        function registerPlayer() {
+        async function registerPlayer() {
             const input = document.getElementById('playerName');
             const err = document.getElementById('errorMsg');
             playerName = input.value.trim();
@@ -192,24 +192,30 @@
 
             startTimestampEpoch = Date.now();
             err.classList.add('hidden');
-            
-            // Move to Puzzle 1 immediately
-            startTimer();
-            showScreen('screen-puzzle1');
 
-            // Send registration data to Google Sheets in the background
+            // Check uniqueness via Google Sheets backend before starting game
             try {
-                fetch(APPS_SCRIPT_URL, {
+                let response = await fetch(APPS_SCRIPT_URL, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ name: playerName, startTime: startTimestampEpoch, endTime: "" })
-                }).then(res => res.json()).then(result => {
-                    if (result.status === "error") {
-                        console.warn("Name already exists in sheet.");
-                    }
                 });
+                let result = await response.json();
+
+                if (result.status === "error") {
+                    err.textContent = "This name is already taken! Please enter a unique name.";
+                    err.classList.remove('hidden');
+                    return;
+                }
+
+                // Unique name confirmed, start game
+                startTimer();
+                showScreen('screen-puzzle1');
             } catch (e) {
-                console.error("Background sync error:", e);
+                console.error("Registration check error:", e);
+                // Fallback in case of temporary network glitch
+                startTimer();
+                showScreen('screen-puzzle1');
             }
         }
 
