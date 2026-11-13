@@ -28,7 +28,7 @@
         .ring-theme-primary { --tw-ring-color: #A8CBA7; }
     </style>
 </head>
-<body class="bg-theme-secondary text-theme-dark min-h-screen flex flex-col justify-between">
+<body class="bg-theme-secondary text-theme-dark min-h-screen flex flex-col justify-between" onload="showAlert()">
 
     <!-- Header / Banner -->
     <header class="bg-white shadow-sm py-3 px-6 border-b border-theme-light flex items-center justify-between">
@@ -57,10 +57,10 @@
             </div>
             <div>
                 <h2 class="text-3xl font-extrabold text-theme-dark">Welcome, Adventurer!</h2>
-                <p class="text-theme-dark opacity-80 mt-2">Join baby Bobo & Todd the dog to help Bryant and Bing prepare for the new arrival!</p>
+                <p class="text-theme-dark opacity-80 mt-2">Join Bobo & Todd the dog to help Bryant and Bing prepare for the new arrival!</p>
             </div>
             <div class="space-y-3 text-left">
-                <label class="block text-xs font-bold uppercase tracking-wider text-theme-accent">Your Full Name</label>
+                <label class="block text-xs font-bold uppercase tracking-wider text-theme-accent">Enter your player name</label>
                 <input type="text" id="playerName" placeholder="e.g. Himmel the Hero" class="w-full px-4 py-3.5 rounded-xl border-2 border-theme-light focus:outline-none focus:ring-2 ring-theme-primary focus:border-theme-primary font-medium text-theme-dark">
                 <p id="errorMsg" class="text-xs text-red-600 hidden font-semibold pl-1"></p>
             </div>
@@ -172,6 +172,10 @@
         let timerInterval = null;
         let startTimestampEpoch = null;
 
+        function showAlert() {
+            alert("⚠️ Please don't cheat and don't refresh the page!");
+        }
+
         function showScreen(screenId) {
             ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-complete'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
@@ -185,7 +189,7 @@
             playerName = input.value.trim();
 
             if (!playerName) {
-                err.textContent = "Please enter your full name.";
+                err.textContent = "Please enter your player name.";
                 err.classList.remove('hidden');
                 return;
             }
@@ -203,7 +207,7 @@
                 let result = await response.json();
 
                 if (result.status === "error") {
-                    err.textContent = "This name is already taken! Please enter a unique name.";
+                    err.textContent = "This player name is already taken! Please enter a unique name.";
                     err.classList.remove('hidden');
                     return;
                 }
