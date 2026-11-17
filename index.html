@@ -26,6 +26,25 @@
         .border-theme-accent { border-color: #8B7355; }
 
         .ring-theme-primary { --tw-ring-color: #A8CBA7; }
+
+        /* Wordle Tile Styles */
+        .wordle-tile {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 0.75rem;
+            border: 2px solid #E8F5E9;
+            background-color: #FDF6E3;
+            color: #5D4037;
+        }
+        .tile-correct { background-color: #A8CBA7 !important; color: white !important; border-color: #A8CBA7 !important; }
+        .tile-present { background-color: #D4A373 !important; color: white !important; border-color: #D4A373 !important; }
+        .tile-absent { background-color: #D1D5DB !important; color: white !important; border-color: #D1D5DB !important; }
     </style>
 </head>
 <body class="bg-theme-secondary text-theme-dark min-h-screen flex flex-col justify-between">
@@ -88,7 +107,7 @@
         <!-- PUZZLE 1 -->
         <div id="screen-puzzle1" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 1 of 4</span>
+                <span>Puzzle 1 of 5</span>
                 <span>Bryant's Tech Desk</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">Bug-Fix Anagram</h2>
@@ -110,7 +129,7 @@
         <!-- PUZZLE 2 -->
         <div id="screen-puzzle2" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 2 of 4</span>
+                <span>Puzzle 2 of 5</span>
                 <span>Bing's Shift</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">UCSF ER Trauma Grid</h2>
@@ -137,7 +156,7 @@
         <!-- PUZZLE 3: First Words Match-Up -->
         <div id="screen-puzzle3" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 3 of 4</span>
+                <span>Puzzle 3 of 5</span>
                 <span>Baby Milestones</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">First Words Match-Up</h2>
@@ -146,14 +165,14 @@
             </p>
             
             <div class="grid grid-cols-2 gap-3">
-                <button type="button" onclick="toggleOption(this)" data-word="Mama" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Mama</button>
-                <button type="button" onclick="toggleOption(this)" data-word="More" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">More</button>
                 <button type="button" onclick="toggleOption(this)" data-word="Dada" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Dada</button>
                 <button type="button" onclick="toggleOption(this)" data-word="Food" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Food</button>
-                <button type="button" onclick="toggleOption(this)" data-word="No" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">No</button>
-                <button type="button" onclick="toggleOption(this)" data-word="Yes" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Yes</button>
                 <button type="button" onclick="toggleOption(this)" data-word="Hi" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Hi</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Mama" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Mama</button>
+                <button type="button" onclick="toggleOption(this)" data-word="More" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">More</button>
+                <button type="button" onclick="toggleOption(this)" data-word="No" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">No</button>
                 <button type="button" onclick="toggleOption(this)" data-word="Woof" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Woof</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Yes" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Yes</button>
             </div>
             
             <p id="err3" class="text-xs text-red-600 text-center font-semibold hidden">Not quite! Make sure you select exactly 4 correct first words.</p>
@@ -166,7 +185,7 @@
         <!-- PUZZLE 4 -->
         <div id="screen-puzzle4" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 4 of 4</span>
+                <span>Puzzle 4 of 5</span>
                 <span>Todd's Sniff-ari</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">The Great Plush Duck Caper</h2>
@@ -181,8 +200,33 @@
                 <p id="err4" class="text-xs text-red-600 text-center font-semibold hidden pl-1">Not quite! Check the map clues again.</p>
             </div>
             <button onclick="checkPuzzle4()" class="w-full bg-theme-primary hover:bg-[#97B695] text-theme-dark font-bold py-4 rounded-2xl shadow-lg shadow-theme-primary/50 transition-all text-lg">
-                Finish & Submit 🏆
+                Submit Answer 🏆
             </button>
+        </div>
+
+        <!-- PUZZLE 5: Wordle Mini-Game -->
+        <div id="screen-puzzle5" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
+            <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
+                <span>Puzzle 5 of 5</span>
+                <span>Todd's Secret Word</span>
+            </div>
+            <h2 class="text-2xl font-extrabold text-theme-dark">Puppy Wordle</h2>
+            <p class="text-theme-dark opacity-80 text-sm leading-relaxed">
+                Guess the 5-letter secret word! Unlimited guesses. Green = correct spot, Yellow = wrong spot, Gray = not in word.
+            </p>
+            
+            <!-- Dynamic Wordle Board Container -->
+            <div id="wordleBoard" class="flex flex-col items-center space-y-2 max-h-64 overflow-y-auto p-1">
+                <!-- Rows injected via JS -->
+            </div>
+
+            <div class="space-y-2">
+                <div class="flex space-x-2">
+                    <input type="text" id="wordleInput" maxlength="5" placeholder="ENTER 5 LETTERS" class="w-full px-4 py-3.5 rounded-xl border-2 border-theme-light uppercase font-bold text-center tracking-widest focus:outline-none focus:ring-2 ring-theme-primary focus:border-theme-primary text-xl">
+                    <button onclick="submitWordleGuess()" class="bg-theme-accent hover:bg-[#7A654B] text-white font-bold px-6 rounded-2xl shadow-lg transition-all">Guess</button>
+                </div>
+                <p id="err5" class="text-xs text-red-600 text-center font-semibold hidden">Must be a 5-letter word!</p>
+            </div>
         </div>
 
         <!-- COMPLETION SCREEN -->
@@ -217,15 +261,21 @@
         let timerInterval = null;
         let startTimestampEpoch = null;
 
+        // Wordle state
+        const SECRET_WORD = "PUPPY";
+
         function closeModal() {
             document.getElementById('customModal').classList.add('hidden');
         }
 
         function showScreen(screenId) {
-            ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-puzzle4', 'screen-complete'].forEach(id => {
+            ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-puzzle4', 'screen-puzzle5', 'screen-complete'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
+            if(screenId === 'screen-puzzle5') {
+                initWordleBoard();
+            }
         }
 
         async function registerPlayer() {
@@ -330,7 +380,7 @@
 
             if (isAllCorrect) {
                 err.classList.add('hidden');
-                alert("Correct! On to Todd's Sniff-ari!");
+                alert("Correct! On to Puzzle 4!");
                 showScreen('screen-puzzle4');
             } else {
                 err.textContent = "Not quite right! Check your selections and try again.";
@@ -343,27 +393,99 @@
             const err = document.getElementById('err4');
             if (val === "H8") {
                 err.classList.add('hidden');
-                clearInterval(timerInterval);
-                const finalTimeString = document.getElementById('timeVal').innerText;
-                document.getElementById('finalTime').textContent = finalTimeString;
-
-                const endTimestampEpoch = Date.now();
-
-                // Send End Time Epoch to Sheet in the background
-                try {
-                    fetch(APPS_SCRIPT_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "text/plain;charset=utf-8" },
-                        body: JSON.stringify({ name: playerName, startTime: "", endTime: endTimestampEpoch })
-                    });
-                } catch(e) {
-                    console.error("Completion Error:", e);
-                }
-
-                showScreen('screen-complete');
+                alert("Correct! Final challenge: Todd's Wordle!");
+                showScreen('screen-puzzle5');
             } else {
                 err.classList.remove('hidden');
             }
+        }
+
+        // Wordle Logic
+        function initWordleBoard() {
+            const board = document.getElementById('wordleBoard');
+            board.innerHTML = '';
+        }
+
+        function submitWordleGuess() {
+            const input = document.getElementById('wordleInput');
+            const err = document.getElementById('err5');
+            const guess = input.value.trim().toUpperCase();
+
+            if (guess.length !== 5) {
+                err.textContent = "Must be a 5-letter word!";
+                err.classList.remove('hidden');
+                return;
+            }
+            err.classList.add('hidden');
+
+            // Create row
+            const board = document.getElementById('wordleBoard');
+            const row = document.createElement('div');
+            row.className = 'flex space-x-2 mb-2';
+
+            const secretChars = SECRET_WORD.split('');
+            const guessChars = guess.split('');
+            const statuses = Array(5).fill('absent');
+
+            // Check greens
+            for (let i = 0; i < 5; i++) {
+                if (guessChars[i] === secretChars[i]) {
+                    statuses[i] = 'correct';
+                    secretChars[i] = null;
+                    guessChars[i] = null;
+                }
+            }
+
+            // Check yellows
+            for (let i = 0; i < 5; i++) {
+                if (guessChars[i] !== null) {
+                    const index = secretChars.indexOf(guessChars[i]);
+                    if (index !== -1) {
+                        statuses[i] = 'present';
+                        secretChars[index] = null;
+                    }
+                }
+            }
+
+            // Render tiles
+            for (let i = 0; i < 5; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'wordle-tile';
+                tile.textContent = guess[i];
+                if (statuses[i] === 'correct') tile.classList.add('tile-correct');
+                else if (statuses[i] === 'present') tile.classList.add('tile-present');
+                else tile.classList.add('tile-absent');
+                row.appendChild(tile);
+            }
+
+            board.appendChild(row);
+            input.value = '';
+            board.scrollTop = board.scrollHeight;
+
+            if (guess === SECRET_WORD) {
+                setTimeout(() => finishGame(), 500);
+            }
+        }
+
+        async function finishGame() {
+            clearInterval(timerInterval);
+            const finalTimeString = document.getElementById('timeVal').innerText;
+            document.getElementById('finalTime').textContent = finalTimeString;
+
+            const endTimestampEpoch = Date.now();
+
+            // Send End Time Epoch to Sheet in the background
+            try {
+                fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ name: playerName, startTime: "", endTime: endTimestampEpoch })
+                });
+            } catch(e) {
+                console.error("Completion Error:", e);
+            }
+
+            showScreen('screen-complete');
         }
     </script>
 </body>
