@@ -28,7 +28,23 @@
         .ring-theme-primary { --tw-ring-color: #A8CBA7; }
     </style>
 </head>
-<body class="bg-theme-secondary text-theme-dark min-h-screen flex flex-col justify-between" onload="showAlert()">
+<body class="bg-theme-secondary text-theme-dark min-h-screen flex flex-col justify-between">
+
+    <!-- Custom Popup Modal ("Please read:") -->
+    <div id="customModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full border border-theme-light text-center space-y-4">
+            <div class="inline-block p-3 bg-theme-light rounded-full text-3xl shadow-inner border border-theme-primary">
+                ⚠️
+            </div>
+            <div>
+                <h3 class="text-2xl font-extrabold text-theme-dark font-heading">Please read:</h3>
+                <p class="text-theme-dark opacity-80 mt-2 text-sm">Please don't cheat and don't refresh the page!</p>
+            </div>
+            <button onclick="closeModal()" class="w-full bg-theme-accent hover:bg-[#7A654B] text-white font-bold py-3 rounded-2xl shadow-lg shadow-theme-accent/30 transition-all text-base">
+                Got it, Let's Play! 👍
+            </button>
+        </div>
+    </div>
 
     <!-- Header / Banner -->
     <header class="bg-white shadow-sm py-3 px-6 border-b border-theme-light flex items-center justify-between">
@@ -57,7 +73,7 @@
             </div>
             <div>
                 <h2 class="text-3xl font-extrabold text-theme-dark">Welcome, Adventurer!</h2>
-                <p class="text-theme-dark opacity-80 mt-2">Join Bobo & Todd the dog to help Bryant and Bing prepare for the new arrival!</p>
+                <p class="text-theme-dark opacity-80 mt-2">Join Todd the dog to help Bryant and Bing prepare for the new arrival!</p>
             </div>
             <div class="space-y-3 text-left">
                 <label class="block text-xs font-bold uppercase tracking-wider text-theme-accent">Enter your player name</label>
@@ -72,7 +88,7 @@
         <!-- PUZZLE 1 -->
         <div id="screen-puzzle1" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 1 of 3</span>
+                <span>Puzzle 1 of 4</span>
                 <span>Bryant's Tech Desk</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">Bug-Fix Anagram</h2>
@@ -94,7 +110,7 @@
         <!-- PUZZLE 2 -->
         <div id="screen-puzzle2" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 2 of 3</span>
+                <span>Puzzle 2 of 4</span>
                 <span>Bing's Shift</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">UCSF ER Trauma Grid</h2>
@@ -118,10 +134,39 @@
             </button>
         </div>
 
-        <!-- PUZZLE 3 -->
+        <!-- PUZZLE 3: First Words Match-Up -->
         <div id="screen-puzzle3" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 3 of 3</span>
+                <span>Puzzle 3 of 4</span>
+                <span>Baby Milestones</span>
+            </div>
+            <h2 class="text-2xl font-extrabold text-theme-dark">First Words Match-Up</h2>
+            <p class="text-theme-dark opacity-80 leading-relaxed">
+                Select the exact <strong>4</strong> most common baby's first words from the list below. (Click to select/deselect)
+            </p>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="toggleOption(this)" data-word="Mama" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Mama</button>
+                <button type="button" onclick="toggleOption(this)" data-word="More" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">More</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Dada" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Dada</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Food" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Food</button>
+                <button type="button" onclick="toggleOption(this)" data-word="No" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">No</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Yes" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Yes</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Hi" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Hi</button>
+                <button type="button" onclick="toggleOption(this)" data-word="Woof" class="p-3.5 rounded-xl border-2 border-theme-light font-bold text-theme-dark bg-theme-secondary hover:bg-theme-light transition-all text-center">Woof</button>
+            </div>
+            
+            <p id="err3" class="text-xs text-red-600 text-center font-semibold hidden">Not quite! Make sure you select exactly 4 correct first words.</p>
+
+            <button onclick="checkPuzzle3()" class="w-full bg-theme-accent hover:bg-[#7A654B] text-white font-bold py-4 rounded-2xl shadow-lg shadow-theme-accent/30 transition-all text-lg">
+                Submit Selection 💬
+            </button>
+        </div>
+
+        <!-- PUZZLE 4 -->
+        <div id="screen-puzzle4" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
+            <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
+                <span>Puzzle 4 of 4</span>
                 <span>Todd's Sniff-ari</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">The Great Plush Duck Caper</h2>
@@ -132,10 +177,10 @@
                 💡 <strong>Hint:</strong> Look at the printed map card at the venue and trace Todd's steps from the inland red hydrant to the Duck Pond!
             </div>
             <div class="space-y-2">
-                <input type="text" id="ans3" placeholder="e.g. A1" class="w-full px-4 py-3.5 rounded-xl border-2 border-theme-light uppercase font-bold text-center tracking-widest focus:outline-none focus:ring-2 ring-theme-primary focus:border-theme-primary text-xl">
-                <p id="err3" class="text-xs text-red-600 text-center font-semibold hidden pl-1">Not quite! Check the map clues again.</p>
+                <input type="text" id="ans4" placeholder="e.g. A1" class="w-full px-4 py-3.5 rounded-xl border-2 border-theme-light uppercase font-bold text-center tracking-widest focus:outline-none focus:ring-2 ring-theme-primary focus:border-theme-primary text-xl">
+                <p id="err4" class="text-xs text-red-600 text-center font-semibold hidden pl-1">Not quite! Check the map clues again.</p>
             </div>
-            <button onclick="checkPuzzle3()" class="w-full bg-theme-primary hover:bg-[#97B695] text-theme-dark font-bold py-4 rounded-2xl shadow-lg shadow-theme-primary/50 transition-all text-lg">
+            <button onclick="checkPuzzle4()" class="w-full bg-theme-primary hover:bg-[#97B695] text-theme-dark font-bold py-4 rounded-2xl shadow-lg shadow-theme-primary/50 transition-all text-lg">
                 Finish & Submit 🏆
             </button>
         </div>
@@ -172,12 +217,12 @@
         let timerInterval = null;
         let startTimestampEpoch = null;
 
-        function showAlert() {
-            alert("⚠️ Please don't cheat and don't refresh the page!");
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
         }
 
         function showScreen(screenId) {
-            ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-complete'].forEach(id => {
+            ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-puzzle4', 'screen-complete'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
@@ -257,9 +302,45 @@
             }
         }
 
+        function toggleOption(btn) {
+            btn.classList.toggle('bg-theme-primary');
+            btn.classList.toggle('text-white');
+            btn.classList.toggle('border-theme-accent');
+            btn.classList.toggle('bg-theme-secondary');
+            btn.classList.toggle('selected');
+        }
+
         function checkPuzzle3() {
-            const val = document.getElementById('ans3').value.trim().toUpperCase();
+            const selectedButtons = document.querySelectorAll('#screen-puzzle3 .selected');
             const err = document.getElementById('err3');
+            
+            if (selectedButtons.length !== 4) {
+                err.textContent = "Please select exactly 4 options!";
+                err.classList.remove('hidden');
+                return;
+            }
+
+            const correctAnswers = ["MAMA", "DADA", "NO", "HI"];
+            let userChoices = [];
+            selectedButtons.forEach(btn => {
+                userChoices.push(btn.getAttribute('data-word').toUpperCase());
+            });
+
+            const isAllCorrect = correctAnswers.every(ans => userChoices.includes(ans)) && userChoices.every(ans => correctAnswers.includes(ans));
+
+            if (isAllCorrect) {
+                err.classList.add('hidden');
+                alert("Correct! On to Todd's Sniff-ari!");
+                showScreen('screen-puzzle4');
+            } else {
+                err.textContent = "Not quite right! Check your selections and try again.";
+                err.classList.remove('hidden');
+            }
+        }
+
+        function checkPuzzle4() {
+            const val = document.getElementById('ans4').value.trim().toUpperCase();
+            const err = document.getElementById('err4');
             if (val === "H8") {
                 err.classList.add('hidden');
                 clearInterval(timerInterval);
