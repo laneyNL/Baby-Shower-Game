@@ -237,7 +237,7 @@
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">Todd's Dash! 🐾</h2>
             <p class="text-theme-dark opacity-80 text-xs">
-                Survive 30 seconds to reach the finish line! Tap or Click to Jump, tap twice for Double Jump!
+                Survive 30 seconds to reach the finish line! Tap or Click to Jump!
             </p>
             
             <!-- Game Arena -->
@@ -304,7 +304,6 @@
         let dashAnimFrame = null;
         let toddY = 0;
         let toddVelocityY = 0;
-        let jumpCount = 0;
         let obstacles = [];
         let obstacleTimer = 0;
         let nextSpawnTime = 50;
@@ -506,14 +505,13 @@
             }
         }
 
-        // Todd's Dash Game Logic (Fair Hitbox Buffer)
+        // Todd's Dash Game Logic (Single High/Fast Jump Only)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
             dashTimeLeft = 30;
             toddY = 0;
             toddVelocityY = 0;
-            jumpCount = 0;
             obstacles = [];
             obstacleTimer = 0;
             nextSpawnTime = 45;
@@ -535,9 +533,9 @@
 
         function handleGameInput() {
             if (!dashRunning) return;
-            if (jumpCount < 2) {
+            // Single tap jump allowed only when on the ground
+            if (toddY === 0) {
                 toddVelocityY = 12.0; 
-                jumpCount++;
             }
         }
 
@@ -549,7 +547,6 @@
             if (toddY <= 0) {
                 toddY = 0;
                 toddVelocityY = 0;
-                jumpCount = 0;
             }
 
             const toddEl = document.getElementById('playerTodd');
@@ -588,7 +585,6 @@
                 o.x -= 4.5;
                 o.el.style.right = (containerWidth - o.x) + 'px';
 
-                // Added a buffer (- 12) so clears don't trigger false crashes
                 if (o.x > 26 && o.x < (38 + o.width) && toddY < (o.height - 12)) {
                     endToddDash(false);
                     return;
