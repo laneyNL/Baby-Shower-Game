@@ -506,7 +506,7 @@
             }
         }
 
-        // Todd's Dash Game Logic (Shorter Jumps & Correct Tree Orientation)
+        // Todd's Dash Game Logic (Faster up, Faster down)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 9.5; // Shorter, snappier jump height
+                toddVelocityY = 10.5; // Quick, snappy jump lift
                 jumpCount++;
             }
         }
@@ -544,8 +544,8 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Gravity tuned for shorter jump arc
-            toddVelocityY -= 0.55; 
+            // Heavier gravity so Todd falls back down much faster
+            toddVelocityY -= 0.85; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
@@ -575,7 +575,7 @@
                 obs.style.right = '-40px';
                 obs.style.width = tWidth + 'px';
                 
-                // Correct Tree Structure: Sage Green Foliage on TOP, Brown Trunk on BOTTOM
+                // Tree Structure: Sage Green Foliage on TOP, Brown Trunk on BOTTOM
                 obs.innerHTML = `
                     <div class="w-full rounded-full bg-theme-primary border border-theme-accent shadow-sm" style="height: ${tHeight}px;"></div>
                     <div class="w-2 h-3 bg-theme-accent"></div>
