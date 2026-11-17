@@ -307,6 +307,7 @@
         let jumpCount = 0;
         let obstacles = [];
         let obstacleTimer = 0;
+        let nextSpawnTime = 50;
 
         function closeModal() {
             document.getElementById('customModal').classList.add('hidden');
@@ -388,7 +389,6 @@
             const err = document.getElementById('err2');
             if (val === "heiter") {
                 err.classList.add('hidden');
-                alert("Correct! Head over now for Puzzle 3!");
                 showScreen('screen-puzzle3');
             } else {
                 err.classList.remove('hidden');
@@ -423,7 +423,6 @@
 
             if (isAllCorrect) {
                 err.classList.add('hidden');
-                alert("Correct! On to Puzzle 4!");
                 showScreen('screen-puzzle4');
             } else {
                 err.textContent = "Not quite right! Check your selections and try again.";
@@ -436,7 +435,6 @@
             const err = document.getElementById('err4');
             if (val === "H8") {
                 err.classList.add('hidden');
-                alert("Correct! On to Puzzle 5!");
                 showScreen('screen-puzzle5');
             } else {
                 err.classList.remove('hidden');
@@ -503,13 +501,12 @@
 
             if (guess === SECRET_WORD) {
                 setTimeout(() => {
-                    alert("Correct! Final Challenge: Todd's Dash!");
                     showScreen('screen-puzzle6');
                 }, 400);
             }
         }
 
-        // Todd's Dash Game Logic
+        // Todd's Dash Game Logic (Snappier & Tree Obstacles)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -519,6 +516,7 @@
             jumpCount = 0;
             obstacles = [];
             obstacleTimer = 0;
+            nextSpawnTime = 40;
             
             document.getElementById('startDashBtn').classList.add('hidden');
             document.getElementById('gameStatus').textContent = "";
@@ -538,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 11;
+                toddVelocityY = 13.5; // Snappier jump velocity
                 jumpCount++;
             }
         }
@@ -546,8 +544,8 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Physics
-            toddVelocityY -= 0.6; // Gravity
+            // Lighter gravity for responsive feel
+            toddVelocityY -= 0.52; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
@@ -558,34 +556,51 @@
             const toddEl = document.getElementById('playerTodd');
             toddEl.style.bottom = (16 + toddY) + 'px';
 
-            // Obstacle spawning
+            // Variable obstacle spawning
             obstacleTimer++;
-            if (obstacleTimer > 65) {
+            if (obstacleTimer > nextSpawnTime) {
                 obstacleTimer = 0;
+                nextSpawnTime = Math.floor(Math.random() * 35) + 45; // randomized frequency
+                
                 const container = document.getElementById('gameContainer');
                 const obs = document.createElement('div');
-                obs.className = 'absolute bottom-4 w-6 h-8 bg-theme-accent rounded-md';
-                obs.style.right = '-20px';
+                
+                // Varied tree heights and widths
+                const heights = [32, 44, 56];
+                const widths = [20, 26, 32];
+                const randIndex = Math.floor(Math.random() * heights.length);
+                const tHeight = heights[randIndex];
+                const tWidth = widths[randIndex];
+
+                obs.className = 'absolute bottom-4 flex flex-col items-center';
+                obs.style.right = '-40px';
+                obs.style.width = tWidth + 'px';
+                
+                // Tree Trunk (Brown) & Foliage (Sage Green)
+                obs.innerHTML = `
+                    <div class="w-2 h-3 bg-theme-accent"></div>
+                    <div class="w-full rounded-full bg-theme-primary border border-theme-accent shadow-sm" style="height: ${tHeight}px;"></div>
+                `;
+
                 container.appendChild(obs);
-                obstacles.push({ el: obs, x: container.clientWidth });
+                obstacles.push({ el: obs, x: container.clientWidth, width: tWidth, height: tHeight });
             }
 
             // Move obstacles & collision detection
             const containerWidth = document.getElementById('gameContainer').clientWidth;
             for (let i = obstacles.length - 1; i >= 0; i--) {
                 let o = obstacles[i];
-                o.x -= 4.5;
+                o.x -= 4.8;
                 o.el.style.right = (containerWidth - o.x) + 'px';
 
-                // Simple Box Collision (Todd is left-10 (40px wide, ~40px height))
-                if (o.x > 30 && o.x < 75 && toddY < 25) {
-                    // Crash!
+                // Precise collision box check
+                if (o.x > 25 && o.x < (40 + o.width) && toddY < o.height) {
                     endToddDash(false);
                     return;
                 }
 
                 // Remove offscreen obstacles
-                if (o.x < -30) {
+                if (o.x < -40) {
                     o.el.remove();
                     obstacles.splice(i, 1);
                 }
@@ -599,13 +614,12 @@
             clearInterval(dashInterval);
             cancelAnimationFrame(dashAnimFrame);
 
-            // Clear obstacle DOM elements
             obstacles.forEach(o => o.el.remove());
             obstacles = [];
 
             if (won) {
                 document.getElementById('gameStatus').textContent = "🎉 Finish Line Reached!";
-                setTimeout(() => finishGame(), 800);
+                setTimeout(() => finishGame(), 600);
             } else {
                 document.getElementById('gameStatus').textContent = "💥 Crash! Restarting...";
                 setTimeout(() => {
@@ -613,7 +627,7 @@
                     document.getElementById('gameStatus').textContent = "";
                     toddY = 0;
                     document.getElementById('playerTodd').style.bottom = '16px';
-                }, 1000);
+                }, 800);
             }
         }
 
@@ -624,7 +638,6 @@
 
             const endTimestampEpoch = Date.now();
 
-            // Send End Time Epoch to Sheet in the background
             try {
                 fetch(APPS_SCRIPT_URL, {
                     method: "POST",
