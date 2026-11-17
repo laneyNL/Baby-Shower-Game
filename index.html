@@ -506,7 +506,7 @@
             }
         }
 
-        // Todd's Dash Game Logic (Snappier & Tree Obstacles)
+        // Todd's Dash Game Logic (Shorter Jumps & Correct Tree Orientation)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 13.5; // Snappier jump velocity
+                toddVelocityY = 9.5; // Shorter, snappier jump height
                 jumpCount++;
             }
         }
@@ -544,8 +544,8 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Lighter gravity for responsive feel
-            toddVelocityY -= 0.52; 
+            // Gravity tuned for shorter jump arc
+            toddVelocityY -= 0.55; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
@@ -560,13 +560,12 @@
             obstacleTimer++;
             if (obstacleTimer > nextSpawnTime) {
                 obstacleTimer = 0;
-                nextSpawnTime = Math.floor(Math.random() * 35) + 45; // randomized frequency
+                nextSpawnTime = Math.floor(Math.random() * 35) + 45; 
                 
                 const container = document.getElementById('gameContainer');
                 const obs = document.createElement('div');
                 
-                // Varied tree heights and widths
-                const heights = [32, 44, 56];
+                const heights = [28, 38, 48];
                 const widths = [20, 26, 32];
                 const randIndex = Math.floor(Math.random() * heights.length);
                 const tHeight = heights[randIndex];
@@ -576,10 +575,10 @@
                 obs.style.right = '-40px';
                 obs.style.width = tWidth + 'px';
                 
-                // Tree Trunk (Brown) & Foliage (Sage Green)
+                // Correct Tree Structure: Sage Green Foliage on TOP, Brown Trunk on BOTTOM
                 obs.innerHTML = `
-                    <div class="w-2 h-3 bg-theme-accent"></div>
                     <div class="w-full rounded-full bg-theme-primary border border-theme-accent shadow-sm" style="height: ${tHeight}px;"></div>
+                    <div class="w-2 h-3 bg-theme-accent"></div>
                 `;
 
                 container.appendChild(obs);
@@ -593,13 +592,11 @@
                 o.x -= 4.8;
                 o.el.style.right = (containerWidth - o.x) + 'px';
 
-                // Precise collision box check
                 if (o.x > 25 && o.x < (40 + o.width) && toddY < o.height) {
                     endToddDash(false);
                     return;
                 }
 
-                // Remove offscreen obstacles
                 if (o.x < -40) {
                     o.el.remove();
                     obstacles.splice(i, 1);
