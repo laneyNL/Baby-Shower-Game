@@ -506,7 +506,7 @@
             }
         }
 
-        // Todd's Dash Game Logic (Faster up, Faster down)
+        // Todd's Dash Game Logic (Much faster jump up, much faster fall down)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 10.5; // Quick, snappy jump lift
+                toddVelocityY = 12.0; // Snappier, faster initial upward burst
                 jumpCount++;
             }
         }
@@ -544,8 +544,8 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Heavier gravity so Todd falls back down much faster
-            toddVelocityY -= 0.85; 
+            // Much heavier gravity so Todd drops back down instantly
+            toddVelocityY -= 1.35; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
