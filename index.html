@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 12.0; // Snappier, faster initial upward burst
+                toddVelocityY = 20.0; // Snappier, faster initial upward burst
                 jumpCount++;
             }
         }
@@ -545,7 +545,7 @@
             if (!dashRunning) return;
 
             // Much heavier gravity so Todd drops back down instantly
-            toddVelocityY -= 1.35; 
+            toddVelocityY -= 3.35; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
