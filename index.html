@@ -107,7 +107,7 @@
         <!-- PUZZLE 1 -->
         <div id="screen-puzzle1" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 1 of 5</span>
+                <span>Puzzle 1 of 6</span>
                 <span>Bryant's Tech Desk</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">Bug-Fix Anagram</h2>
@@ -129,7 +129,7 @@
         <!-- PUZZLE 2 -->
         <div id="screen-puzzle2" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 2 of 5</span>
+                <span>Puzzle 2 of 6</span>
                 <span>Bing's Shift</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">UCSF ER Trauma Grid</h2>
@@ -156,7 +156,7 @@
         <!-- PUZZLE 3: First Words Match-Up -->
         <div id="screen-puzzle3" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 3 of 5</span>
+                <span>Puzzle 3 of 6</span>
                 <span>Baby Milestones</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">First Words Match-Up</h2>
@@ -185,7 +185,7 @@
         <!-- PUZZLE 4 -->
         <div id="screen-puzzle4" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 4 of 5</span>
+                <span>Puzzle 4 of 6</span>
                 <span>Todd's Sniff-ari</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">The Great Plush Duck Caper</h2>
@@ -207,7 +207,7 @@
         <!-- PUZZLE 5: Wordle Mini-Game -->
         <div id="screen-puzzle5" class="hidden bg-white rounded-3xl shadow-2xl p-8 w-full border border-theme-light space-y-6">
             <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
-                <span>Puzzle 5 of 5</span>
+                <span>Puzzle 5 of 6</span>
                 <span>Todd's Secret Word</span>
             </div>
             <h2 class="text-2xl font-extrabold text-theme-dark">Puppy Wordle</h2>
@@ -216,7 +216,7 @@
             </p>
             
             <!-- Dynamic Wordle Board Container -->
-            <div id="wordleBoard" class="flex flex-col items-center space-y-2 max-h-64 overflow-y-auto p-1">
+            <div id="wordleBoard" class="flex flex-col items-center space-y-2 max-h-48 overflow-y-auto p-1">
                 <!-- Rows injected via JS -->
             </div>
 
@@ -227,6 +227,39 @@
                 </div>
                 <p id="err5" class="text-xs text-red-600 text-center font-semibold hidden">Must be a 5-letter word!</p>
             </div>
+        </div>
+
+        <!-- PUZZLE 6: Todd's Dash Mini-Game -->
+        <div id="screen-puzzle6" class="hidden bg-white rounded-3xl shadow-2xl p-6 w-full border border-theme-light text-center space-y-4">
+            <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-theme-accent bg-theme-light px-4 py-2 rounded-full border border-theme-primary">
+                <span>Puzzle 6 of 6</span>
+                <span>Final Challenge</span>
+            </div>
+            <h2 class="text-2xl font-extrabold text-theme-dark">Todd's Dash! 🐾</h2>
+            <p class="text-theme-dark opacity-80 text-xs">
+                Survive 30 seconds to reach the finish line! Tap or Click to Jump, tap twice for Double Jump!
+            </p>
+            
+            <!-- Game Arena -->
+            <div id="gameContainer" onclick="handleGameInput()" class="relative w-full h-48 bg-theme-secondary rounded-2xl border-2 border-theme-primary overflow-hidden cursor-pointer select-none shadow-inner">
+                <!-- Finish Line -->
+                <div id="finishLine" class="absolute right-0 top-0 h-full w-4 bg-emerald-400 opacity-80 flex flex-col justify-around text-[8px] font-bold text-white items-center">
+                    <span>F</span><span>I</span><span>N</span><span>I</span><span>S</span><span>H</span>
+                </div>
+                <!-- Todd Player -->
+                <div id="playerTodd" class="absolute left-10 bottom-4 w-12 h-12 rounded-full border-2 border-theme-primary overflow-hidden shadow-md bg-white transition-all">
+                    <img src="todd.PNG" alt="Todd" class="w-full h-full object-cover">
+                </div>
+                <!-- HUD -->
+                <div class="absolute top-2 left-3 text-xs font-bold text-theme-accent bg-white/80 px-2 py-1 rounded-lg">
+                    Time Left: <span id="gameTimer">30</span>s
+                </div>
+            </div>
+            
+            <p id="gameStatus" class="text-xs font-bold text-theme-accent h-4"></p>
+            <button onclick="startToddDash()" id="startDashBtn" class="w-full bg-theme-accent hover:bg-[#7A654B] text-white font-bold py-3 rounded-2xl shadow-lg transition-all text-base">
+                Start Running! 🏃‍♂️
+            </button>
         </div>
 
         <!-- COMPLETION SCREEN -->
@@ -264,12 +297,23 @@
         // Wordle state
         const SECRET_WORD = "PUPPY";
 
+        // Todd's Dash Mini-Game State
+        let dashRunning = false;
+        let dashTimeLeft = 30;
+        let dashInterval = null;
+        let dashAnimFrame = null;
+        let toddY = 0;
+        let toddVelocityY = 0;
+        let jumpCount = 0;
+        let obstacles = [];
+        let obstacleTimer = 0;
+
         function closeModal() {
             document.getElementById('customModal').classList.add('hidden');
         }
 
         function showScreen(screenId) {
-            ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-puzzle4', 'screen-puzzle5', 'screen-complete'].forEach(id => {
+            ['screen-register', 'screen-puzzle1', 'screen-puzzle2', 'screen-puzzle3', 'screen-puzzle4', 'screen-puzzle5', 'screen-puzzle6', 'screen-complete'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
@@ -312,7 +356,6 @@
                 showScreen('screen-puzzle1');
             } catch (e) {
                 console.error("Registration check error:", e);
-                // Fallback in case of temporary network glitch
                 startTimer();
                 showScreen('screen-puzzle1');
             }
@@ -393,7 +436,7 @@
             const err = document.getElementById('err4');
             if (val === "H8") {
                 err.classList.add('hidden');
-                alert("Correct! Final challenge: Todd's Wordle!");
+                alert("Correct! On to Puzzle 5!");
                 showScreen('screen-puzzle5');
             } else {
                 err.classList.remove('hidden');
@@ -418,7 +461,6 @@
             }
             err.classList.add('hidden');
 
-            // Create row
             const board = document.getElementById('wordleBoard');
             const row = document.createElement('div');
             row.className = 'flex space-x-2 mb-2';
@@ -427,7 +469,6 @@
             const guessChars = guess.split('');
             const statuses = Array(5).fill('absent');
 
-            // Check greens
             for (let i = 0; i < 5; i++) {
                 if (guessChars[i] === secretChars[i]) {
                     statuses[i] = 'correct';
@@ -436,7 +477,6 @@
                 }
             }
 
-            // Check yellows
             for (let i = 0; i < 5; i++) {
                 if (guessChars[i] !== null) {
                     const index = secretChars.indexOf(guessChars[i]);
@@ -447,7 +487,6 @@
                 }
             }
 
-            // Render tiles
             for (let i = 0; i < 5; i++) {
                 const tile = document.createElement('div');
                 tile.className = 'wordle-tile';
@@ -463,7 +502,118 @@
             board.scrollTop = board.scrollHeight;
 
             if (guess === SECRET_WORD) {
-                setTimeout(() => finishGame(), 500);
+                setTimeout(() => {
+                    alert("Correct! Final Challenge: Todd's Dash!");
+                    showScreen('screen-puzzle6');
+                }, 400);
+            }
+        }
+
+        // Todd's Dash Game Logic
+        function startToddDash() {
+            if (dashRunning) return;
+            dashRunning = true;
+            dashTimeLeft = 30;
+            toddY = 0;
+            toddVelocityY = 0;
+            jumpCount = 0;
+            obstacles = [];
+            obstacleTimer = 0;
+            
+            document.getElementById('startDashBtn').classList.add('hidden');
+            document.getElementById('gameStatus').textContent = "";
+            document.getElementById('gameTimer').textContent = dashTimeLeft;
+
+            dashInterval = setInterval(() => {
+                dashTimeLeft--;
+                document.getElementById('gameTimer').textContent = dashTimeLeft;
+                if (dashTimeLeft <= 0) {
+                    endToddDash(true);
+                }
+            }, 1000);
+
+            dashAnimFrame = requestAnimationFrame(updateToddDash);
+        }
+
+        function handleGameInput() {
+            if (!dashRunning) return;
+            if (jumpCount < 2) {
+                toddVelocityY = 11;
+                jumpCount++;
+            }
+        }
+
+        function updateToddDash() {
+            if (!dashRunning) return;
+
+            // Physics
+            toddVelocityY -= 0.6; // Gravity
+            toddY += toddVelocityY;
+            if (toddY <= 0) {
+                toddY = 0;
+                toddVelocityY = 0;
+                jumpCount = 0;
+            }
+
+            const toddEl = document.getElementById('playerTodd');
+            toddEl.style.bottom = (16 + toddY) + 'px';
+
+            // Obstacle spawning
+            obstacleTimer++;
+            if (obstacleTimer > 65) {
+                obstacleTimer = 0;
+                const container = document.getElementById('gameContainer');
+                const obs = document.createElement('div');
+                obs.className = 'absolute bottom-4 w-6 h-8 bg-theme-accent rounded-md';
+                obs.style.right = '-20px';
+                container.appendChild(obs);
+                obstacles.push({ el: obs, x: container.clientWidth });
+            }
+
+            // Move obstacles & collision detection
+            const containerWidth = document.getElementById('gameContainer').clientWidth;
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                let o = obstacles[i];
+                o.x -= 4.5;
+                o.el.style.right = (containerWidth - o.x) + 'px';
+
+                // Simple Box Collision (Todd is left-10 (40px wide, ~40px height))
+                if (o.x > 30 && o.x < 75 && toddY < 25) {
+                    // Crash!
+                    endToddDash(false);
+                    return;
+                }
+
+                // Remove offscreen obstacles
+                if (o.x < -30) {
+                    o.el.remove();
+                    obstacles.splice(i, 1);
+                }
+            }
+
+            dashAnimFrame = requestAnimationFrame(updateToddDash);
+        }
+
+        function endToddDash(won) {
+            dashRunning = false;
+            clearInterval(dashInterval);
+            cancelAnimationFrame(dashAnimFrame);
+
+            // Clear obstacle DOM elements
+            obstacles.forEach(o => o.el.remove());
+            obstacles = [];
+
+            if (won) {
+                document.getElementById('gameStatus').textContent = "🎉 Finish Line Reached!";
+                setTimeout(() => finishGame(), 800);
+            } else {
+                document.getElementById('gameStatus').textContent = "💥 Crash! Restarting...";
+                setTimeout(() => {
+                    document.getElementById('startDashBtn').classList.remove('hidden');
+                    document.getElementById('gameStatus').textContent = "";
+                    toddY = 0;
+                    document.getElementById('playerTodd').style.bottom = '16px';
+                }, 1000);
             }
         }
 
