@@ -506,7 +506,7 @@
             }
         }
 
-        // Todd's Dash Game Logic (Initial Velocity 30.0, short trees)
+        // Todd's Dash Game Logic (Balanced Physics & Precise Hitbox)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -516,7 +516,7 @@
             jumpCount = 0;
             obstacles = [];
             obstacleTimer = 0;
-            nextSpawnTime = 40;
+            nextSpawnTime = 45;
             
             document.getElementById('startDashBtn').classList.add('hidden');
             document.getElementById('gameStatus').textContent = "";
@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 30.0; // Initial velocity set to 30
+                toddVelocityY = 12.5; // Balanced, comfortable jump strength
                 jumpCount++;
             }
         }
@@ -544,8 +544,8 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Gravity adjusted to match the 30.0 initial velocity smoothly
-            toddVelocityY -= 2.2; 
+            // Clean gravity curve
+            toddVelocityY -= 0.75; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
@@ -560,12 +560,12 @@
             obstacleTimer++;
             if (obstacleTimer > nextSpawnTime) {
                 obstacleTimer = 0;
-                nextSpawnTime = Math.floor(Math.random() * 35) + 45; 
+                nextSpawnTime = Math.floor(Math.random() * 35) + 50; 
                 
                 const container = document.getElementById('gameContainer');
                 const obs = document.createElement('div');
                 
-                // Short tree heights (making them all short as requested)
+                // Short, easy-to-clear trees
                 const heights = [20, 24, 28];
                 const widths = [18, 22, 26];
                 const randIndex = Math.floor(Math.random() * heights.length);
@@ -586,14 +586,15 @@
                 obstacles.push({ el: obs, x: container.clientWidth, width: tWidth, height: tHeight });
             }
 
-            // Move obstacles & collision detection
+            // Move obstacles & strict, fair collision detection
             const containerWidth = document.getElementById('gameContainer').clientWidth;
             for (let i = obstacles.length - 1; i >= 0; i--) {
                 let o = obstacles[i];
-                o.x -= 4.8;
+                o.x -= 4.5;
                 o.el.style.right = (containerWidth - o.x) + 'px';
 
-                if (o.x > 25 && o.x < (40 + o.width) && toddY < o.height) {
+                // Tighter hitbox check so clears actually register correctly
+                if (o.x > 28 && o.x < (38 + o.width) && toddY < (o.height - 4)) {
                     endToddDash(false);
                     return;
                 }
