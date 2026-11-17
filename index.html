@@ -506,7 +506,7 @@
             }
         }
 
-        // Todd's Dash Game Logic (Balanced Physics & Precise Hitbox)
+        // Todd's Dash Game Logic (Fair Hitbox Buffer)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 12.5; // Balanced, comfortable jump strength
+                toddVelocityY = 12.0; 
                 jumpCount++;
             }
         }
@@ -544,8 +544,7 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Clean gravity curve
-            toddVelocityY -= 0.75; 
+            toddVelocityY -= 0.7; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
@@ -556,7 +555,6 @@
             const toddEl = document.getElementById('playerTodd');
             toddEl.style.bottom = (16 + toddY) + 'px';
 
-            // Variable obstacle spawning
             obstacleTimer++;
             if (obstacleTimer > nextSpawnTime) {
                 obstacleTimer = 0;
@@ -565,7 +563,6 @@
                 const container = document.getElementById('gameContainer');
                 const obs = document.createElement('div');
                 
-                // Short, easy-to-clear trees
                 const heights = [20, 24, 28];
                 const widths = [18, 22, 26];
                 const randIndex = Math.floor(Math.random() * heights.length);
@@ -576,7 +573,6 @@
                 obs.style.right = '-40px';
                 obs.style.width = tWidth + 'px';
                 
-                // Tree Structure: Sage Green Foliage on TOP, Brown Trunk on BOTTOM
                 obs.innerHTML = `
                     <div class="w-full rounded-full bg-theme-primary border border-theme-accent shadow-sm" style="height: ${tHeight}px;"></div>
                     <div class="w-2 h-3 bg-theme-accent"></div>
@@ -586,15 +582,14 @@
                 obstacles.push({ el: obs, x: container.clientWidth, width: tWidth, height: tHeight });
             }
 
-            // Move obstacles & strict, fair collision detection
             const containerWidth = document.getElementById('gameContainer').clientWidth;
             for (let i = obstacles.length - 1; i >= 0; i--) {
                 let o = obstacles[i];
                 o.x -= 4.5;
                 o.el.style.right = (containerWidth - o.x) + 'px';
 
-                // Tighter hitbox check so clears actually register correctly
-                if (o.x > 28 && o.x < (38 + o.width) && toddY < (o.height - 4)) {
+                // Added a buffer (- 12) so clears don't trigger false crashes
+                if (o.x > 26 && o.x < (38 + o.width) && toddY < (o.height - 12)) {
                     endToddDash(false);
                     return;
                 }
