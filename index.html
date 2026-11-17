@@ -506,7 +506,7 @@
             }
         }
 
-        // Todd's Dash Game Logic (Much faster jump up, much faster fall down)
+        // Todd's Dash Game Logic (Initial Velocity 30.0, short trees)
         function startToddDash() {
             if (dashRunning) return;
             dashRunning = true;
@@ -536,7 +536,7 @@
         function handleGameInput() {
             if (!dashRunning) return;
             if (jumpCount < 2) {
-                toddVelocityY = 40.0; // Snappier, faster initial upward burst
+                toddVelocityY = 30.0; // Initial velocity set to 30
                 jumpCount++;
             }
         }
@@ -544,8 +544,8 @@
         function updateToddDash() {
             if (!dashRunning) return;
 
-            // Much heavier gravity so Todd drops back down instantly
-            toddVelocityY -= 2; 
+            // Gravity adjusted to match the 30.0 initial velocity smoothly
+            toddVelocityY -= 2.2; 
             toddY += toddVelocityY;
             if (toddY <= 0) {
                 toddY = 0;
@@ -565,8 +565,9 @@
                 const container = document.getElementById('gameContainer');
                 const obs = document.createElement('div');
                 
-                const heights = [28, 38, 48];
-                const widths = [20, 26, 32];
+                // Short tree heights (making them all short as requested)
+                const heights = [20, 24, 28];
+                const widths = [18, 22, 26];
                 const randIndex = Math.floor(Math.random() * heights.length);
                 const tHeight = heights[randIndex];
                 const tWidth = widths[randIndex];
